@@ -3,115 +3,30 @@
 \RequirePackage{etoolbox}
 \RequirePackage{calc}
 \RequirePackage{pgfopts}
-\pgfkeys{
-  /Sampa/outer/numbering/.cd,
-    .is choice,
-    none/.code=\setbeamertemplate{frame numbering}[none],
-    counter/.code=\setbeamertemplate{frame numbering}[counter],
-    fraction/.code=\setbeamertemplate{frame numbering}[fraction],
-}
-\pgfkeys{
-  /Sampa/outer/progressbar/.cd,
-    .is choice,
-    none/.code={%
-      \setbeamertemplate{headline}[plain]
-      \setbeamertemplate{frametitle}[plain]
-      \setbeamertemplate{footline}[plain]
-    },
-    head/.code={\pgfkeys{/Sampa/outer/progressbar=none}
-      \addtobeamertemplate{headline}{}{%
-        \usebeamertemplate*{progress bar in head/foot}
-      }
-    },
-    frametitle/.code={\pgfkeys{/Sampa/outer/progressbar=none}
-      \addtobeamertemplate{frametitle}{}{%
-        \usebeamertemplate*{progress bar in head/foot}
-      }
-    },
-    foot/.code={\pgfkeys{/Sampa/outer/progressbar=none}
-      \addtobeamertemplate{footline}{}{%
-        \usebeamertemplate*{progress bar in head/foot}%
-      }
-    },
-}
-\newcommand{\Sampa@outer@setdefaults}{
-  \pgfkeys{/Sampa/outer/.cd,
-    numbering=fraction,
-    progressbar=none,
-  }
-}
+\RequirePackage{tikz}
+
 \setbeamertemplate{navigation symbols}{}
-\defbeamertemplate{frame footer}{none}{}
-\defbeamertemplate{frame footer}{custom}[1]{ #1 }
-\defbeamertemplate{frame numbering}{none}{}
-\defbeamertemplate{frame numbering}{counter}{\insertframenumber}
-\defbeamertemplate{frame numbering}{fraction}{
-  \insertframenumber/\inserttotalframenumber
-}
-\defbeamertemplate{headline}{plain}{}
-\defbeamertemplate{footline}{plain}{%
-  \begin{beamercolorbox}[wd=\textwidth, sep=3ex]{footline}%
-    \usebeamerfont{page number in head/foot}%
-    \usebeamertemplate*{frame footer}
-    \hfill%
-    \usebeamertemplate*{frame numbering}
-  \end{beamercolorbox}%
-}
-\newlength{\Sampa@frametitle@padding}
-\setlength{\Sampa@frametitle@padding}{2.2ex}
-\newcommand{\Sampa@frametitlestrut@start}{
-  \rule{0pt}{\Sampa@frametitle@padding +%
-    \totalheightof{%
-      \ifcsdef{Sampa@frametitleformat}{\Sampa@frametitleformat X}{X}%
-    }%
-  }%
-}
-\newcommand{\Sampa@frametitlestrut@end}{
-  \rule[-\Sampa@frametitle@padding]{0pt}{\Sampa@frametitle@padding}
-}
-\defbeamertemplate{frametitle}{plain}{%
-  \nointerlineskip%
-  \begin{beamercolorbox}[%
-      wd=\paperwidth,%
-      sep=0pt,%
-      leftskip=\Sampa@frametitle@padding,%
-      rightskip=\Sampa@frametitle@padding,%
-    ]{frametitle}%
-  \Sampa@frametitlestrut@start%
-  \insertframetitle%
-  \nolinebreak%
-  \Sampa@frametitlestrut@end%
-  \end{beamercolorbox}%
-}
-\setbeamertemplate{frametitle continuation}{%
-  \usebeamerfont{frametitle}
-  \romannumeral \insertcontinuationcount
-}
-\newlength{\Sampa@progressinheadfoot}
-\newlength{\Sampa@progressinheadfoot@linewidth}
-\setlength{\Sampa@progressinheadfoot@linewidth}{0.4pt}
-\setbeamertemplate{progress bar in head/foot}{
-  \nointerlineskip
-  \setlength{\Sampa@progressinheadfoot}{%
-    \paperwidth * \ratio{\insertframenumber pt}{\inserttotalframenumber pt}%
-  }%
-  \begin{beamercolorbox}[wd=\paperwidth]{progress bar in head/foot}
+\setbeamertemplate{footline}[frame number]
+
+
+\newlength{\marginedPaperWidth}{\paperwidth - 0.2cm}
+
+% Frame title
+\defbeamertemplate*{frametitle}{lucid}[1][]{
+  \vskip0.2cm%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=1.2cm]{frametitle} 
     \begin{tikzpicture}
-      \fill[bg] (0,0) rectangle (\paperwidth, \Sampa@progressinheadfoot@linewidth);
-      \fill[fg] (0,0) rectangle (\Sampa@progressinheadfoot, \Sampa@progressinheadfoot@linewidth);
-    \end{tikzpicture}%
+      \useasboundingbox(0,0) rectangle(\the\paperwidth,1.2);
+      {\usebeamercolor[fg]{frametitle-left}}
+      \fill[color=frametitle-left.fg] (0.1,0) rectangle(\the\marginedPaperWidth,1.2);
+      \ifx\insertframesubtitle\@empty%
+      {\node[anchor=west] at (0.3,0.61){\usebeamerfont{frametitle}\insertframetitle};}
+      \else%
+      {\node[anchor= west] at (0.2,0.81){\usebeamerfont{frametitle}\insertframetitle};%
+        \node[anchor= west] at (0.4,0.25){\usebeamerfont{framesubtitle}-\insertframesubtitle};}%
+      \fi
+    \end{tikzpicture}
   \end{beamercolorbox}
 }
-\AtBeginDocument{%
-  \apptocmd{\appendix}{%
-    \pgfkeys{%
-      /Sampa/outer/.cd,
-      numbering=none,
-      progressbar=none}
-    }{}{}
-}
-\Sampa@outer@setdefaults
-\ProcessPgfPackageOptions{/Sampa/outer}
+
 \endinput
-%%
-%% End of file `beamerouterthemeSampa.sty'.
