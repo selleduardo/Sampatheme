@@ -1,0 +1,87 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeSampa}
+  [2016/11/19 v1.1 Sampa Beamer theme]
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
+\pgfkeys{/Sampa/.cd,
+  .search also={
+    /Sampa/inner,
+    /Sampa/outer,
+    /Sampa/color,
+    /Sampa/font,
+  }
+}
+\pgfkeys{
+  /Sampa/titleformat plain/.cd,
+    .is choice,
+    regular/.code={%
+      \let\Sampa@plaintitleformat\@empty%
+      \setbeamerfont{standout}{shape=\normalfont}%
+    },
+    smallcaps/.code={%
+      \let\Sampa@plaintitleformat\@empty%
+      \setbeamerfont{standout}{shape=\scshape}%
+    },
+    allsmallcaps/.code={%
+      \let\Sampa@plaintitleformat\MakeLowercase%
+      \setbeamerfont{standout}{shape=\scshape}%
+      \PackageWarning{beamerthemeSampa}{%
+        Be aware that titleformat plain=allsmallcaps can lead to problems%
+      }
+    },
+    allcaps/.code={%
+      \let\Sampa@plaintitleformat\MakeUppercase%
+      \setbeamerfont{standout}{shape=\normalfont}%
+      \PackageWarning{beamerthemeSampa}{%
+        Be aware that titleformat plain=allcaps can lead to problems%
+      }
+    },
+}
+\pgfkeys{
+  /Sampa/titleformat/.code=\pgfkeysalso{
+      font/titleformat title=#1,
+      font/titleformat subtitle=#1,
+      font/titleformat section=#1,
+      font/titleformat frame=#1,
+      titleformat plain=#1,
+    }
+}
+\pgfkeys{/Sampa/.cd,
+  usetitleprogressbar/.code=\pgfkeysalso{outer/progressbar=frametitle},
+  noslidenumbers/.code=\pgfkeysalso{outer/numbering=none},
+  usetotalslideindicator/.code=\pgfkeysalso{outer/numbering=fraction},
+  nosectionslide/.code=\pgfkeysalso{inner/sectionpage=none},
+  darkcolors/.code=\pgfkeysalso{color/background=dark},
+  blockbg/.code=\pgfkeysalso{color/block=fill, inner/block=fill},
+}
+\newcommand{\Sampa@setdefaults}{
+  \pgfkeys{/Sampa/.cd,
+    titleformat plain=regular,
+  }
+}
+\useinnertheme{Sampa}
+\useoutertheme{Sampa}
+\usecolortheme{Sampa}
+\usefonttheme{Sampa}
+\AtEndPreamble{%
+  \@ifpackageloaded{pgfplots}{%
+    \RequirePackage{pgfplotsthemetol}
+  }{}
+}
+\newcommand{\metroset}[1]{\pgfkeys{/Sampa/.cd,#1}}
+\def\Sampa@plaintitleformat#1{#1}
+\newcommand{\plain}[2][]{%
+  \PackageWarning{beamerthemeSampa}{%
+    The syntax `\plain' may be deprecated in a future version of Sampa.
+    Please use a frame with [standout] instead.
+  }
+  \begin{frame}[standout]{#1}
+    \Sampa@plaintitleformat{#2}
+  \end{frame}
+}
+\newcommand{\mreducelistspacing}{\vspace{-\topsep}}
+\Sampa@setdefaults
+\ProcessPgfOptions{/Sampa}
+\endinput
+%%
+%% End of file `beamerthemeSampa.sty'.
