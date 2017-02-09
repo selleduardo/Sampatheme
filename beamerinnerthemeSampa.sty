@@ -6,6 +6,8 @@
 \RequirePackage{pgfopts}
 \RequirePackage{tikz}
 
+\setbeamersize{text margin left=20pt,text margin right=30pt}
+
 \setbeamertemplate{title page}{
   \begin{minipage}[b][\paperheight]{\textwidth}
     \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
@@ -133,7 +135,7 @@
 \setbeamertemplate{block alerted end}{\end{beamercolorbox}\vspace*{0.2ex}}
 \setbeamertemplate{block example end}{\end{beamercolorbox}\vspace*{0.2ex}}
 
-\setbeamertemplate{itemize items}{\textbullet}
+\setbeamertemplate{itemize items}{\vspace{0.5cm}}
 \setbeamertemplate{caption label separator}{: }
 \setbeamertemplate{caption}[numbered]
 
