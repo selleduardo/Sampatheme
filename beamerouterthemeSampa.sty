@@ -22,7 +22,7 @@
       {\node[anchor=west] at (0.3,0.5){\usebeamerfont{frametitle}\insertframetitle};}
       \else%
       {\node[anchor= west] (ttl) at (0.3,0.73){\usebeamerfont{frametitle}\insertframetitle};%
-        \node[anchor = west] at (0.5,0.22){\usebeamerfont{framesubtitle}\insertframesubtitle};
+        \node[anchor = west] at (0.5,0.22){\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\insertframesubtitle};
       }%
       \fi
     \end{tikzpicture}
