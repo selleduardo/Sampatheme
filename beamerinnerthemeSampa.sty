@@ -1,12 +1,17 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{beamerinnerthemeSampa}[2016/11/19 Sampa inner theme]
 \RequirePackage{etoolbox}
+\RequirePackage{ragged2e}
 \RequirePackage{keyval}
 \RequirePackage{calc}
 \RequirePackage{pgfopts}
 \RequirePackage{tikz}
 
+
 \setbeamersize{text margin left=20pt,text margin right=30pt}
+
+\apptocmd{\frame}{}{\justifying}{} % Allow optional arguments after frame.
+
 
 \setbeamertemplate{title page}{
   \begin{minipage}[b][\paperheight]{\textwidth}
@@ -22,6 +27,7 @@
     \vspace*{1mm}
   \end{minipage}
 }
+
 
 \def\maketitle{%
   \ifbeamer@inframe
